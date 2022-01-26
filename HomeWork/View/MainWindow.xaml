@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:HomeWork.ViewModel"
-        xmlns:infra="clr-namespace:HomeWork.Infrastructure"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:conv="clr-namespace:HomeWork.Infrastructure"
         xmlns:local="clr-namespace:HomeWork"
         mc:Ignorable="d"
         Title="Книгоприложение" Height="450" Width="800" ResizeMode="NoResize" FontSize="14">
+
+    <Window.Resources>
+        <conv:DateTimeToYearConverter x:Key="DateTimeToYearConverterKey"/>
+    </Window.Resources>
+    
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -49,13 +55,13 @@
                 <StackPanel Width="277" DataContext="{Binding SelectedBook}"
                             Orientation="Vertical" Margin="1,2,2,2">
                     <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Id}"/>
+                    <TextBox Text="{Binding Path=Id}"/>
                     <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Name}"/>
                     <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Author}"/>
                     <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding YearCreation}"/>
+                    <TextBox Text="{Binding Path=YearCreation}"/>
                     <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding ISBN}"/>
                     <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}"/>
@@ -64,7 +70,15 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1">
-                <Button Content="Добавить" Width="180" Margin="5,3,2.5,3"/>
+                <Button Content="Добавить" Width="180" Margin="5,3,2.5,3">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction 
+                Command="{Binding GetBook}"
+                CommandParameter="{Binding SelectedBook}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
                 <Button Content="Удалить" Width="180" Margin="2.5,3,2.5,3"/>
                 <Button Content="Обновить" Width="180" Margin="2.5,3,2.5,3"/>
             </StackPanel>
