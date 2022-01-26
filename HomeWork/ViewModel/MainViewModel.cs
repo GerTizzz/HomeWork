@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using HomeWork.Model;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace HomeWork.ViewModel
@@ -12,35 +14,26 @@ namespace HomeWork.ViewModel
     class MainViewModel : BaseViewModel
     {
         private readonly string _ConnectionString;
+
+        private ObservableCollection<Book> _Books = new ObservableCollection<Book>();
+
+        public ObservableCollection<Book> Books
+        {
+            get => _Books;
+        }
+
+        private Book _SelectedBookindex;
+
+        public Book SelectedBookIndex
+        {
+            get => _SelectedBookindex;
+            set => SetOnPropertyChanged(ref _SelectedBookindex, value);
+        }
         public MainViewModel()
         {
             _ConnectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
             GetBookShortList();
         }
-
-        private int _SelectedBookindex;
-
-        public int SelectedBookIndex
-        {
-            get => _SelectedBookindex;
-            set => SetOnPropertyChanged(ref _SelectedBookindex, value);
-        }
-
-        private List<string> _BooksShortList = new List<string>();
-
-        public List<string> BooksShortList
-        {
-            get => _BooksShortList;
-        }
-
-        private string _Id;
-
-        public string Id 
-        {
-            get => _Id;
-            set => SetOnPropertyChanged(ref _Id, value);
-        }
-
         private async void GetBookShortList()
         {
             try
@@ -48,13 +41,17 @@ namespace HomeWork.ViewModel
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
-                    command.CommandText = "SELECT BookName FROM BooksTable";
+                    command.CommandText = "SELECT BookId, BookName, BookAuthor FROM BooksTable";
                     command.Connection = connection;
                     await connection.OpenAsync();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     while (await dataReader.ReadAsync())
                     {
-                        _BooksShortList.Add(dataReader.GetValue(0).ToString());
+                        Book newBook = new Book();
+                        newBook.Id = dataReader.GetInt32(0);
+                        newBook.Name = dataReader.GetString(1);
+                        newBook.Author = dataReader.GetString(2);
+                        Books.Add(newBook);
                     }
                 }
             }

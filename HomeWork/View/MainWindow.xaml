@@ -26,7 +26,16 @@
                    Grid.Column="0" Grid.Row="0"/>
         <TextBlock Text="Выбранная книга" Style="{StaticResource DefaultTextBlock}" 
                    Grid.Column="1" Grid.Row="0"/>
-        <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding BooksShortList}">
+        <ListBox Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedBook}"
+                 ItemsSource="{Binding Books}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Path=Name}" FontStyle="Italic" FontSize="16"/>
+                        <TextBlock Text="{Binding Path=Author}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -56,7 +65,7 @@
                         Grid.Row="1">
                 <Button Content="Добавить" Width="180" Margin="5,3,2.5,3"/>
                 <Button Content="Удалить" Width="180" Margin="2.5,3,2.5,3"/>
-                <Button Content="Сохранить" Width="180" Margin="2.5,3,2.5,3"/>
+                <Button Content="Обновить" Width="180" Margin="2.5,3,2.5,3"/>
             </StackPanel>
         </Grid>
         
