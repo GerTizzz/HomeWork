@@ -61,6 +61,27 @@ namespace HomeWork.ViewModel
             }
         }
 
+        private async void GetFullBookInformation(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_ConnectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "SELECT * FROM BooksTable WHERE BookId = " + id;
+                command.Connection = connection;
+                await connection.OpenAsync();
+                SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                while (await dataReader.ReadAsync())
+                {
+                    Book newBook = new Book();
+                    _SelectedBookindex.YearCreation = dataReader.GetDateTime(3);
+                    newBook.ISBN = dataReader.GetString(4);
+                    //newBook. = dataReader.GetBytes(5);
+                    newBook.Description = dataReader.GetString(6);
+                    Books.Add(newBook);
+                }
+            }
+        }
+
         private void AddNewBook()
         {
 
