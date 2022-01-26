@@ -10,10 +10,9 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    <Window.Resources>
-        
-    </Window.Resources>
+
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240*"/>
             <ColumnDefinition Width="560"/>
@@ -27,7 +26,9 @@
                    Grid.Column="0" Grid.Row="0"/>
         <TextBlock Text="Выбранная книга" Style="{StaticResource DefaultTextBlock}" 
                    Grid.Column="1" Grid.Row="0"/>
-        
+        <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding BooksShortList}">
+        </ListBox>
+
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.9*"/>
