@@ -43,6 +43,13 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction 
+                Command="{Binding GetBook}"
+                CommandParameter="{Binding SelectedBook}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </ListBox>
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -70,15 +77,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1">
-                <Button Content="Добавить" Width="180" Margin="5,3,2.5,3">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction 
-                Command="{Binding GetBook}"
-                CommandParameter="{Binding SelectedBook}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+                <Button Content="Добавить" Width="180" Margin="5,3,2.5,3"/>
                 <Button Content="Удалить" Width="180" Margin="2.5,3,2.5,3"/>
                 <Button Content="Обновить" Width="180" Margin="2.5,3,2.5,3"/>
             </StackPanel>
