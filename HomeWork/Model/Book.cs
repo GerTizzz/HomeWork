@@ -9,7 +9,7 @@ namespace HomeWork.Model
 
         public string Author { get; set; }
 
-        public DateTime YearCreation { get; set; }
+        public DateTime YearCreation;
 
         //public Image Cover { get; set; }
         public string ISBN { get; set; }

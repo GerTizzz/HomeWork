@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:HomeWork.ViewModel"
+        xmlns:infra="clr-namespace:HomeWork.Infrastructure"
         xmlns:local="clr-namespace:HomeWork"
         mc:Ignorable="d"
         Title="Книгоприложение" Height="450" Width="800" ResizeMode="NoResize" FontSize="14">
@@ -45,10 +46,10 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Image Margin="2,2,1,2" Width="277"/>
-                <StackPanel Width="277" 
+                <StackPanel Width="277" DataContext="{Binding SelectedBook}"
                             Orientation="Vertical" Margin="1,2,2,2">
                     <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding SelectedBookIndex.Id}"/>
+                    <TextBox Text="{Binding Id}"/>
                     <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Name}"/>
                     <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}"/>

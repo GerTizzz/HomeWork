@@ -24,7 +24,7 @@ namespace HomeWork.ViewModel
 
         private Book _SelectedBook;
 
-        public Book SelectedBookIndex
+        public Book SelectedBook
         {
             get => _SelectedBook;
             set => SetOnPropertyChanged(ref _SelectedBook, value);
