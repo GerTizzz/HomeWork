@@ -22,12 +22,12 @@ namespace HomeWork.ViewModel
             get => _Books;
         }
 
-        private Book _SelectedBookindex;
+        private Book _SelectedBook;
 
         public Book SelectedBookIndex
         {
-            get => _SelectedBookindex;
-            set => SetOnPropertyChanged(ref _SelectedBookindex, value);
+            get => _SelectedBook;
+            set => SetOnPropertyChanged(ref _SelectedBook, value);
         }
         public MainViewModel()
         {
@@ -73,10 +73,10 @@ namespace HomeWork.ViewModel
                 while (await dataReader.ReadAsync())
                 {
                     Book newBook = new Book();
-                    _SelectedBookindex.YearCreation = dataReader.GetDateTime(3);
-                    newBook.ISBN = dataReader.GetString(4);
+                    _SelectedBook.YearCreation = dataReader.GetDateTime(3);
+                    _SelectedBook.ISBN = dataReader.GetString(4);
                     //newBook. = dataReader.GetBytes(5);
-                    newBook.Description = dataReader.GetString(6);
+                    _SelectedBook.Description = dataReader.GetString(6);
                     Books.Add(newBook);
                 }
             }
