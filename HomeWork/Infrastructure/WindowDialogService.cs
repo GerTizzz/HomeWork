@@ -11,6 +11,7 @@ namespace HomeWork.Infrastructure
         public bool OpenFileDialog()
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "jpg files (*.jpg)|*.jpg";
             if (ofd.ShowDialog() == true)
             {
                 FilePath = ofd.FileName;

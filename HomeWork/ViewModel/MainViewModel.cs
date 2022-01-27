@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Configuration;
-
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 using HomeWork.Model;
@@ -20,8 +15,12 @@ namespace HomeWork.ViewModel
     class MainViewModel : BaseViewModel
     {
 
-        IDialogService _DialogService;
-        IGetImageService _ImageService;
+        #region Сервисы работы с пользователем и файлами
+
+        private IDialogService _DialogService; // Сервис, вызывающий окно выбора файла и окно сообщения
+        private IGetImageService _ImageService; // Сервис, считывающий выбранный файл
+
+        #endregion 
 
         #region Поля и Свойства
 
@@ -70,7 +69,60 @@ namespace HomeWork.ViewModel
 
         private void OnAddBookCommandExecuted(object p)
         {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.CommandText = "INSERT BooksTable VALUES ((@name), (@author), (@date), (@isbn), (@cover), (@descript))";
+                    command.Parameters.AddWithValue("@name", SelectedBook.BookName);
+                    command.Parameters.AddWithValue("@author", SelectedBook.BookAuthor);
+                    command.Parameters.AddWithValue("@date", SelectedBook.BookDate.ToString("yyyy"));
+                    command.Parameters.AddWithValue("@isbn", SelectedBook.BookISBN);
+                    command.Parameters.AddWithValue("@cover", SelectedBook.BookCover);
+                    command.Parameters.AddWithValue("@descript", SelectedBook.BookDescription);
+                    command.Connection = connection;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                Books.Add(SelectedBook);
+            }
+            catch (Exception exc)
+            {
+                _DialogService.ShowMessage(exc.Message);
+            }
+        }
 
+        #endregion
+
+        #region Команда удаления книги
+
+        public ICommand RemoveBookCommand { get; }
+
+        private bool CanRemoveBookCommandExecute(object p) => true;
+
+        private void OnRemoveBookCommandExecuted(object p)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.CommandText = "DELETE BooksTable WHERE BookId = (@id)";
+                    command.Parameters.AddWithValue("@id", SelectedBook.BookId);
+                    command.Connection = connection;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                Books.Remove(SelectedBook);
+                SelectedBook = Books.FirstOrDefault();
+            }
+            catch (Exception exc)
+            {
+                _DialogService.ShowMessage(exc.Message);
+            }
         }
 
         #endregion
@@ -136,7 +188,7 @@ namespace HomeWork.ViewModel
 
         #endregion
 
-        #region Команда замены изображения
+        #region Команда замены изображения обложки книги
 
         public ICommand GetNewCoverCommand { get; }
 
@@ -159,7 +211,7 @@ namespace HomeWork.ViewModel
 
         #endregion
 
-        #region Команда обновления данных
+        #region Команда обновления данных о книге
 
         public ICommand SetUpdatedDataCommand { get; }
 
@@ -181,10 +233,6 @@ namespace HomeWork.ViewModel
                     command.Parameters.AddWithValue("@cover", SelectedBook.BookCover);
                     command.Parameters.AddWithValue("@descript", SelectedBook.BookDescription);
                     command.Parameters.AddWithValue("@id", SelectedBook.BookId);
-                    //command.CommandText = "UPDATE BooksTable SET BookName = N'" + SelectedBook.BookName +
-                    //    "', BookAuthor = N'" + SelectedBook.BookAuthor + "', BookDate = '" + SelectedBook.BookDate.ToString("yyyy") +
-                    //    "', BookISBN = N'" + SelectedBook.BookISBN + "', BookCover = " + SelectedBook.BookCover +
-                    //    ", BookDescription = N'" + SelectedBook.BookDescription + "' WHERE BookId = " + SelectedBook.BookId;
                     command.Connection = connection;
                     connection.Open();
                     command.ExecuteNonQuery();
