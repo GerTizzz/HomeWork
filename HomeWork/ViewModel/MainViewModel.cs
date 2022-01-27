@@ -5,16 +5,23 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Configuration;
-using HomeWork.Model;
-using HomeWork.Infrastructure.Commands;
+
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
+using HomeWork.Model;
+using HomeWork.Infrastructure;
+using HomeWork.Infrastructure.Commands;
+using HomeWork.Infrastructure.Services;
 
 namespace HomeWork.ViewModel
 {
     class MainViewModel : BaseViewModel
     {
+
+        IDialogService _DialogService;
+        IGetImageService _ImageService;
 
         #region Поля и Свойства
 
@@ -41,17 +48,22 @@ namespace HomeWork.ViewModel
 
         public MainViewModel()
         {
-            AddBook = new MainCommand(OnAddBookCommandExecuted, CanAddBookCommandExecute);
-            GetBook = new MainCommand(OnGetBookCommandExecuted, CanGetBookCommandExecute);
+            AddBookCommand = new MainCommand(OnAddBookCommandExecuted, CanAddBookCommandExecute);
+            GetBookCommand = new MainCommand(OnGetBookCommandExecuted, CanGetBookCommandExecute);
+            GetShortListCommand = new MainCommand(OnGetShortListCommandExecuted, CanGetShortListCommandExecute);
+            GetNewCoverCommand = new MainCommand(OnGetNewCoverCommandExecuted, CanGetNewCoverCommandExecute);
+            _DialogService = new WindowDialogService();
+            _ImageService = new ImageService();
             _ConnectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
-            GetBookShortList();
         }
 
         #endregion
 
         #region Команды
 
-        public ICommand AddBook { get; }
+        #region Команда добавления книги
+
+        public ICommand AddBookCommand { get; }
 
         private bool CanAddBookCommandExecute(object p) => true;
 
@@ -60,71 +72,131 @@ namespace HomeWork.ViewModel
 
         }
 
-        public ICommand GetBook { get; }
-
-        private bool CanGetBookCommandExecute(object p) => true;
-
-        private async void OnGetBookCommandExecuted(object p)
-        {
-            using (SqlConnection connection = new SqlConnection(_ConnectionString))
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandText = "SELECT * FROM BooksTable WHERE BookId = " + _SelectedBook.Id;
-                command.Connection = connection;
-                await connection.OpenAsync();
-                SqlDataReader dataReader = await command.ExecuteReaderAsync();
-                while (await dataReader.ReadAsync())
-                {
-                    _SelectedBook.YearCreation = dataReader.GetDateTime(3);
-                    _SelectedBook.ISBN = dataReader.GetString(4);
-                    _SelectedBook.Description = dataReader.GetString(6);
-                }
-            }
-        }
-
         #endregion
 
-        private async void GetBookShortList()
+        #region Команда получения книг
+
+        public ICommand GetShortListCommand { get; }
+
+        private bool CanGetShortListCommandExecute(object p) => true;
+
+        private void OnGetShortListCommandExecuted(object p)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
-                    command.CommandText = "SELECT BookId, BookName, BookAuthor FROM BooksTable";
+                    command.CommandText = "SELECT * FROM BooksTable";
                     command.Connection = connection;
-                    await connection.OpenAsync();
-                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
-                    while (await dataReader.ReadAsync())
+                    connection.Open();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
                     {
                         Book newBook = new Book();
-                        newBook.Id = dataReader.GetInt32(0);
-                        newBook.Name = dataReader.GetString(1);
-                        newBook.Author = dataReader.GetString(2);
+                        newBook.BookId = dataReader.GetInt32(0);
+                        newBook.BookName = dataReader.GetString(1);
+                        newBook.BookAuthor = dataReader.GetString(2);
+                        newBook.BookDate = dataReader.GetDateTime(3);
+                        newBook.BookISBN = dataReader.GetString(4);
+                        newBook.BookDescription = dataReader.GetString(6);
+                        newBook.BookCover = (byte[])dataReader["BookCover"];
                         Books.Add(newBook);
                     }
                 }
-                _SelectedBook = _Books.FirstOrDefault();
+                SelectedBook = Books.FirstOrDefault();
+                //SelectedBook = GetFullBookInformation(Books.FirstOrDefault().BookId);
             }
             catch (Exception exc)
             {
-                //Прописать диалоговое окно
+                _DialogService.ShowMessage(exc.Message);
             }
         }
 
-        private void GetFullBookInformation(int id)
-        {
+        #endregion
 
+        #region Команда получения выбранной книги
+
+        public ICommand GetBookCommand { get; }
+
+        private bool CanGetBookCommandExecute(object p) => true;
+
+        private void OnGetBookCommandExecuted(object p)
+        {
+            try
+            {
+                SelectedBook = Books.FirstOrDefault(x => x.BookId == (int)p);
+                //SelectedBook = GetFullBookInformation((int)p);
+            }
+            catch (Exception exc)
+            {
+                _DialogService.ShowMessage(exc.Message);
+            }
         }
 
-        private void AddNewBook()
-        {
+        #endregion
 
+        #region Команда замены изображения
+
+        public ICommand GetNewCoverCommand { get; }
+
+        private bool CanGetNewCoverCommandExecute(object p) => true;
+
+        private void OnGetNewCoverCommandExecuted(object p)
+        {
+            try
+            {
+                if (_DialogService.OpenFileDialog() == true)
+                {
+                    if (SelectedBook == null)
+                        SelectedBook = new Book();
+                    SelectedBook.BookCover = _ImageService.OpenFile(_DialogService.FilePath);
+                }
+            }
+            catch (Exception exc)
+            {
+                _DialogService.ShowMessage(exc.Message);
+            }
         }
 
-        private void DeleteSelectedBook()
-        {
+        #endregion
 
-        }
+        #endregion
+
+        #region Приватные методы извлечения данных из БД
+
+        /*private Book GetFullBookInformation(int id)
+        {
+            Book newBook = new Book();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.CommandText = "SELECT * FROM BooksTable WHERE BookId = " + id;
+                    command.Connection = connection;
+                    connection.OpenAsync();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        newBook.BookId = dataReader.GetInt32(0);
+                        newBook.BookName = dataReader.GetString(1);
+                        newBook.BookAuthor = dataReader.GetString(2);
+                        newBook.BookDate = dataReader.GetDateTime(3);
+                        newBook.BookISBN = dataReader.GetString(4);
+                        newBook.BookDescription = dataReader.GetString(6);
+                        newBook.BookCover = (byte[])dataReader["BookCover"];
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            return newBook;
+        }*/
+
+        #endregion
+
     }
 }

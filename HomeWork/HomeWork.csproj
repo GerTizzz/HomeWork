@@ -65,7 +65,15 @@
     <Compile Include="Infrastructure\Commands\BaseCommands.cs" />
     <Compile Include="Infrastructure\Commands\MainCommand.cs" />
     <Compile Include="Infrastructure\Converters\DateTimeToYearConverter.cs" />
+    <Compile Include="Infrastructure\ImageService.cs" />
+    <Compile Include="Infrastructure\Services\IDialogService.cs" />
+    <Compile Include="Infrastructure\Services\IGetImageService.cs" />
+    <Compile Include="Infrastructure\WindowDialogService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Page Include="Theme\TextBoxTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

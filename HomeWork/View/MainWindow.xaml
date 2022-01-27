@@ -9,17 +9,29 @@
         xmlns:local="clr-namespace:HomeWork"
         mc:Ignorable="d"
         Title="Книгоприложение" Height="450" Width="800" ResizeMode="NoResize" FontSize="14">
-
+    
+    <!--УКАЗЫВАЮ В КАЧЕСТВЕ ПОДКЛЮЧАЕМОГО РЕСУРСА КОНВЕРТЕР, ЧТОБЫ ОТОБРАЖАТЬ ИЗ ВСЕЙ ДАТЫ ТОЛЬКО ГОД-->
     <Window.Resources>
         <conv:DateTimeToYearConverter x:Key="DateTimeToYearConverterKey"/>
     </Window.Resources>
-    
+    <!---->
+
+    <!--СОЗДАЮ ТРИГГЕР НА СОБЫТИЕ ПРОГРУЗКИ ОКНА-->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding GetShortListCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <!---->
+
+    <!--ЗАДАЮ КОНТЕКСТ VIEWMODEL ДЛЯ ДАННОГО ПРЕДСТАВЛЕНИЯ-->
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
 
     <Grid>
-
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240*"/>
             <ColumnDefinition Width="560"/>
@@ -28,60 +40,95 @@
             <RowDefinition Height="30*"/>
             <RowDefinition Height="420*"/>
         </Grid.RowDefinitions>
+
+        <!--ЗАГОЛОВОК ШОРТ-ЛИСТА-->
         <TextBlock Text="Список книг" Style="{StaticResource DefaultTextBlock}"
                    IsHitTestVisible="False"
                    Grid.Column="0" Grid.Row="0"/>
+        <!---->
+        
+        <!--ЗАГОЛОВОК ВЫБРАННОЙ КНИГИ-->
         <TextBlock Text="Выбранная книга" Style="{StaticResource DefaultTextBlock}" 
                    Grid.Column="1" Grid.Row="0"/>
+        <!---->
+
+        <!--ЛИСТБОКС, СОДЕРЖАЩИЙ ШОРТ-ЛИСТ КНИГ-->
         <ListBox Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedBook}"
-                 ItemsSource="{Binding Books}">
+                 ItemsSource="{Binding Books}" SelectionMode="Single">
+            <!--ШАБЛОН ЭЛЕМЕНТА ЛИСТБОКСА ДЛЯ ОТОБРАЖЕНИЯ НАЗВАНИЯ И АТВОРА-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Path=Name}" FontStyle="Italic" FontSize="16"/>
-                        <TextBlock Text="{Binding Path=Author}"/>
+                        <TextBlock Text="{Binding Path=BookName}" FontStyle="Italic" FontSize="16"/>
+                        <TextBlock Text="{Binding Path=BookAuthor}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <!---->
+            <!--ТРИГГЕР НА ИЗМЕНЕНИЕ ВЫБРАННОЙ КНИГИ-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction 
-                Command="{Binding GetBook}"
-                CommandParameter="{Binding SelectedBook}" />
+                Command="{Binding GetBookCommand}"
+                CommandParameter="{Binding SelectedBook.BookId}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <!---->
         </ListBox>
+        <!---->
 
-        <Grid Grid.Row="1" Grid.Column="1">
+        <!--ЗДЕСЬ ОТОБРАЖАЕТСЯ ИНФОРМАЦИЯ КАСАТЕЛЬНО ВЫБРАННОЙ КНИГИ И УПРАВЛЕНИЯ ЕЮ-->
+        <Grid Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedBook}">
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.9*"/>
                 <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
+
+            <!--ЗДЕСЬ ВСЕ ЭЛЕМЕНТЫ ДАННЫХ, НА КОТОРЫХ ОТОБРАЖАЕСТЯ ИНФОРМАЦИЯ О ВЫБРАННОЙ КНИГЕ-->
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Image Margin="2,2,1,2" Width="277"/>
-                <StackPanel Width="277" DataContext="{Binding SelectedBook}"
-                            Orientation="Vertical" Margin="1,2,2,2">
+                <!--ЭЛЕМЕНТ ПРЕДСТАВЛЕНИЯ ИЗОБРАЖЕНИЯ ОБЛОЖКИ-->
+                <Image Margin="2,2,1,2" Width="277" MaxWidth="277" Source="{Binding BookCover}"/>
+                <!---->
+
+                <!--ПЕРЕЧИСЛЕНИЕЕ ВСЕЙ ДОСТУПНОЙ ИНФОРМАЦИИ О КНИГЕ-->
+                <StackPanel Width="277" Orientation="Vertical" Margin="1,2,2,2" x:Name="DescriptionStackPanel">
                     <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=Id}"/>
+                    <TextBox Text="{Binding Path=BookId}" IsEnabled="False" Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Name}"/>
+                    <TextBox Text="{Binding Path=BookName}" Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Author}"/>
+                    <TextBox Text="{Binding Path=BookAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=YearCreation}"/>
+                    <TextBox Text="{Binding Path=BookDate, Converter={StaticResource DateTimeToYearConverterKey}}"
+                             Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding ISBN}"/>
+                    <TextBox Text="{Binding Path=BookISBN}" Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Description}"/>
+                    <TextBox Text="{Binding Path=BookDescription}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"
+                             MaxHeight="131" Height="131" Style="{StaticResource DefaultTextBox}"/>
                 </StackPanel>
+                <!---->
+                
             </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
-                <Button Content="Добавить" Width="180" Margin="5,3,2.5,3"/>
-                <Button Content="Удалить" Width="180" Margin="2.5,3,2.5,3"/>
-                <Button Content="Обновить" Width="180" Margin="2.5,3,2.5,3"/>
+            <!---->
+
+            <!--КНОПКИ УПРАВЛЕНИЯ ВЫБРАННОЙ КНИГОЙ-->
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <StackPanel.DataContext>
+                    <vm:MainViewModel/>
+                </StackPanel.DataContext>
+                <Button Content="Сменить картинку" Width="135" Margin="4,3,2,3"
+                        Command="{Binding GetNewCoverCommand}" CommandParameter="{Binding SelectedBook.BookId}"/>
+                <Button Content="Добавить" Width="135" Margin="2,3,2,3" Command="{Binding AddBookCommand}"/>
+                <Button Content="Удалить" Width="135" Margin="2,3,2,3"/>
+                <Button Content="Обновить" Width="135" Margin="2,3,4,3"/>
             </StackPanel>
+            <!---->
+            
         </Grid>
+        <!---->
 
     </Grid>
 </Window>

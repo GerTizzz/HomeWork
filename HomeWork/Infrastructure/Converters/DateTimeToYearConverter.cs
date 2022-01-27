@@ -9,8 +9,12 @@ namespace HomeWork.Infrastructure
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DateTime date = (DateTime)value;
-            return date.ToShortDateString();
+            if (Equals((DateTime)value, new DateTime()))
+            {
+                return null;
+            }
+            else
+                return ((DateTime)value).ToString("yyyy");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

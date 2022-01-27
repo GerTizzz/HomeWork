@@ -6,29 +6,61 @@ namespace HomeWork.Model
 {
     internal class Book : INotifyPropertyChanged
     {
-        public string Name { get; set; }
-        public int Id { get; set; }
+        private string _Name;
+
+        public string BookName
+        {
+            get => _Name;
+            set => SetOnPropertyChanged(ref _Name, value);
+        }
+
+        private int _Id;
+
+        public int BookId
+        {
+            get => _Id;
+            set => SetOnPropertyChanged(ref _Id, value);
+        }
 
         private string _Author;
 
-        public string Author
+        public string BookAuthor
         {
             get => _Author;
             set => SetOnPropertyChanged(ref _Author, value);
         }
 
-        public DateTime YearCreation;
+        private DateTime _YearCreation;
 
-        //public Image Cover { get; set; }
+        public DateTime BookDate
+        {
+            get => _YearCreation;
+            set => SetOnPropertyChanged(ref _YearCreation, value);
+        }
+
         private string _ISBN;
 
-        public string ISBN
+        public string BookISBN
         {
             get => _ISBN;
             set => SetOnPropertyChanged(ref _ISBN, value);
         }
 
-        public string Description { get; set; }
+        private byte[] _Cover;
+
+        public byte[] BookCover
+        {
+            get => _Cover;
+            set => SetOnPropertyChanged(ref _Cover, value);
+        }
+
+        private string _Description;
+
+        public string BookDescription 
+        {
+            get => _Description;
+            set => SetOnPropertyChanged(ref _Description, value); 
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,6 +79,5 @@ namespace HomeWork.Model
             OnPropertyChange(PropertyName);
             return true;
         }
-
     }
 }
