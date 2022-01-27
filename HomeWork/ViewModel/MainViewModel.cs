@@ -105,7 +105,6 @@ namespace HomeWork.ViewModel
                     }
                 }
                 SelectedBook = Books.FirstOrDefault();
-                //SelectedBook = GetFullBookInformation(Books.FirstOrDefault().BookId);
             }
             catch (Exception exc)
             {
@@ -126,7 +125,6 @@ namespace HomeWork.ViewModel
             try
             {
                 SelectedBook = Books.FirstOrDefault(x => x.BookId == (int)p);
-                //SelectedBook = GetFullBookInformation((int)p);
             }
             catch (Exception exc)
             {
@@ -148,8 +146,6 @@ namespace HomeWork.ViewModel
             {
                 if (_DialogService.OpenFileDialog() == true)
                 {
-                    if (SelectedBook == null)
-                        SelectedBook = new Book();
                     SelectedBook.BookCover = _ImageService.OpenFile(_DialogService.FilePath);
                 }
             }
@@ -160,41 +156,6 @@ namespace HomeWork.ViewModel
         }
 
         #endregion
-
-        #endregion
-
-        #region Приватные методы извлечения данных из БД
-
-        /*private Book GetFullBookInformation(int id)
-        {
-            Book newBook = new Book();
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_ConnectionString))
-                {
-                    SqlCommand command = new SqlCommand();
-                    command.CommandText = "SELECT * FROM BooksTable WHERE BookId = " + id;
-                    command.Connection = connection;
-                    connection.OpenAsync();
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    while (dataReader.Read())
-                    {
-                        newBook.BookId = dataReader.GetInt32(0);
-                        newBook.BookName = dataReader.GetString(1);
-                        newBook.BookAuthor = dataReader.GetString(2);
-                        newBook.BookDate = dataReader.GetDateTime(3);
-                        newBook.BookISBN = dataReader.GetString(4);
-                        newBook.BookDescription = dataReader.GetString(6);
-                        newBook.BookCover = (byte[])dataReader["BookCover"];
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            return newBook;
-        }*/
 
         #endregion
 

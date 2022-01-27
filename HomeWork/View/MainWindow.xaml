@@ -8,7 +8,8 @@
         xmlns:conv="clr-namespace:HomeWork.Infrastructure"
         xmlns:local="clr-namespace:HomeWork"
         mc:Ignorable="d"
-        Title="Книгоприложение" Height="450" Width="800" ResizeMode="NoResize" FontSize="14">
+        Title="{Binding SelectedBook.BookName}" Height="450" Width="800"
+        ResizeMode="NoResize" FontSize="14">
     
     <!--УКАЗЫВАЮ В КАЧЕСТВЕ ПОДКЛЮЧАЕМОГО РЕСУРСА КОНВЕРТЕР, ЧТОБЫ ОТОБРАЖАТЬ ИЗ ВСЕЙ ДАТЫ ТОЛЬКО ГОД-->
     <Window.Resources>
@@ -78,7 +79,7 @@
         <!---->
 
         <!--ЗДЕСЬ ОТОБРАЖАЕТСЯ ИНФОРМАЦИЯ КАСАТЕЛЬНО ВЫБРАННОЙ КНИГИ И УПРАВЛЕНИЯ ЕЮ-->
-        <Grid Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedBook}">
+        <Grid Grid.Row="1" Grid.Column="1">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.9*"/>
@@ -86,13 +87,13 @@
             </Grid.RowDefinitions>
 
             <!--ЗДЕСЬ ВСЕ ЭЛЕМЕНТЫ ДАННЫХ, НА КОТОРЫХ ОТОБРАЖАЕСТЯ ИНФОРМАЦИЯ О ВЫБРАННОЙ КНИГЕ-->
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" DataContext="{Binding SelectedBook}">
                 <!--ЭЛЕМЕНТ ПРЕДСТАВЛЕНИЯ ИЗОБРАЖЕНИЯ ОБЛОЖКИ-->
                 <Image Margin="2,2,1,2" Width="277" MaxWidth="277" Source="{Binding BookCover}"/>
                 <!---->
 
                 <!--ПЕРЕЧИСЛЕНИЕЕ ВСЕЙ ДОСТУПНОЙ ИНФОРМАЦИИ О КНИГЕ-->
-                <StackPanel Width="277" Orientation="Vertical" Margin="1,2,2,2" x:Name="DescriptionStackPanel">
+                <StackPanel Width="277" Orientation="Vertical" Margin="1,2,2,2">
                     <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Path=BookId}" IsEnabled="False" Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}"/>
@@ -107,7 +108,7 @@
                     <TextBox Text="{Binding Path=BookISBN}" Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Path=BookDescription}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"
-                             MaxHeight="131" Height="131" Style="{StaticResource DefaultTextBox}"/>
+                             MaxHeight="125" Height="125" Style="{StaticResource DefaultTextBox}"/>
                 </StackPanel>
                 <!---->
                 
@@ -116,12 +117,9 @@
 
             <!--КНОПКИ УПРАВЛЕНИЯ ВЫБРАННОЙ КНИГОЙ-->
             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <StackPanel.DataContext>
-                    <vm:MainViewModel/>
-                </StackPanel.DataContext>
                 <Button Content="Сменить картинку" Width="135" Margin="4,3,2,3"
-                        Command="{Binding GetNewCoverCommand}" CommandParameter="{Binding SelectedBook.BookId}"/>
-                <Button Content="Добавить" Width="135" Margin="2,3,2,3" Command="{Binding AddBookCommand}"/>
+                        Command="{Binding GetNewCoverCommand}" CommandParameter="{Binding SelectedBook}"/>
+                <Button Content="Добавить" Width="135" Margin="2,3,2,3" Command="{Binding AddBookCommand}" CommandParameter="{Binding SelectedBook}"/>
                 <Button Content="Удалить" Width="135" Margin="2,3,2,3"/>
                 <Button Content="Обновить" Width="135" Margin="2,3,4,3"/>
             </StackPanel>
