@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace HomeWork.Model
 {
-    internal class Book : INotifyPropertyChanged
+    internal class Book : INotifyPropertyChanged //реализовал интерфейс, чтобы значение каждого поля можно было отобразить в списке в окне
     {
         private string _Name;
 
