@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeWork.Infrastructure.Commands
 {
-    internal class MainCommand : BaseCommand
+    internal class MainCommand : BaseCommand//класс основной команды
     {
 
         private readonly Action<object> _Execute;
@@ -15,7 +15,7 @@ namespace HomeWork.Infrastructure.Commands
 
         public MainCommand(Action<object> Execute, Func<object, bool> CanExecute = null)
         {
-            _Execute = Execute ?? throw new ArgumentException(nameof(Execute));
+            _Execute = Execute ?? throw new ArgumentException(nameof(Execute));//выполняем или выбрасываем исключение
             _CanExecute = CanExecute;
         }
 

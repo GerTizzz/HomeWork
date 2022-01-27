@@ -12,6 +12,8 @@ namespace HomeWork.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
+        //метод позволяет избежать циклов обновления привязок
+        //плюс через него мне интуитивно проще понимать какое поле привязывается, т.к. передаю не имя, а ссылку на объект
         public bool SetOnPropertyChanged<T>(ref T field, T value, [CallerMemberName] string PropertyName = null)
         {
             if (Equals(field, value))

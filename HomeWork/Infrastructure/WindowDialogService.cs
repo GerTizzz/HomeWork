@@ -6,9 +6,9 @@ namespace HomeWork.Infrastructure
 {
     class WindowDialogService : IDialogService
     {
-        public string FilePath { get; set; }
+        public string FilePath { get; set; }//Путь до выбранного файла изображения
 
-        public bool OpenFileDialog()
+        public bool OpenFileDialog()//Метод открытия кона для выбора файла
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "jpg files (*.jpg)|*.jpg";
@@ -20,7 +20,7 @@ namespace HomeWork.Infrastructure
             return false;
         }
 
-        public void ShowMessage(string message)
+        public void ShowMessage(string message)//Метод вызова окна сообщений
         {
             MessageBox.Show(message);
         }

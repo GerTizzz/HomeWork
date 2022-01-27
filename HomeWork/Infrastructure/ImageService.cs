@@ -5,7 +5,7 @@ namespace HomeWork.Infrastructure
 {
     class ImageService : IGetImageService
     {
-        public byte[] OpenFile(string path)
+        public byte[] OpenFile(string path)//Метод считывания файла изображения
         {
             byte[] file = new byte[0];
             using (FileStream fs = File.OpenRead(path))

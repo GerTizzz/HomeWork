@@ -24,17 +24,22 @@ namespace HomeWork.ViewModel
 
         #region Поля и Свойства
 
+        //Строка подключения к БД
         private readonly string _ConnectionString;
 
+        //Список, который будет отображать книги
         private ObservableCollection<Book> _Books = new ObservableCollection<Book>();
 
+        //Свойство списка с книгами
         public ObservableCollection<Book> Books
         {
             get => _Books;
         }
 
+        //Выбранная книга
         private Book _SelectedBook;
 
+        //Свойство выбранной книги
         public Book SelectedBook
         {
             get => _SelectedBook;
@@ -47,14 +52,17 @@ namespace HomeWork.ViewModel
 
         public MainViewModel()
         {
+            //Создаю новые команды
             AddBookCommand = new MainCommand(OnAddBookCommandExecuted, CanAddBookCommandExecute);
             GetBookCommand = new MainCommand(OnGetBookCommandExecuted, CanGetBookCommandExecute);
             GetShortListCommand = new MainCommand(OnGetShortListCommandExecuted, CanGetShortListCommandExecute);
             GetNewCoverCommand = new MainCommand(OnGetNewCoverCommandExecuted, CanGetNewCoverCommandExecute);
             SetUpdatedDataCommand = new MainCommand(OnSetUpdatedDataCommandExecuted, CanSetUpdatedDataCommandExecute);
             RemoveBookCommand = new MainCommand(OnRemoveBookCommandExecuted, CanRemoveBookCommandExecute);
+            //Инициализирую сервисы
             _DialogService = new WindowDialogService();
             _ImageService = new ImageService();
+            //Получаю строку подключения
             _ConnectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
         }
 
@@ -72,8 +80,9 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                if (SelectedBook == null)
+                if (SelectedBook == null)//Проверяю на пустоту
                     SelectedBook = new Book();
+                //Добавляю данные по книги
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -89,6 +98,7 @@ namespace HomeWork.ViewModel
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
+                //Получаю сгенерированный для этой книги Id
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -102,6 +112,7 @@ namespace HomeWork.ViewModel
                     }
                     connection.Close();
                 }
+                //Добавляю книгу в список
                 Books.Add(SelectedBook);
             }
             catch (Exception exc)
@@ -122,8 +133,9 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                if (Books.Count < 1)
+                if (Books.Count < 1)//Проверяю список на наличие книг
                     return;
+                //Удаляю по Id книгу
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -134,7 +146,9 @@ namespace HomeWork.ViewModel
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
+                //Удаляю книгу из списка
                 Books.Remove(Books.SingleOrDefault(x => x.BookId == SelectedBook.BookId));
+                //Делаю первую книгу из списка выбранной
                 SelectedBook = Books.FirstOrDefault();
             }
             catch (Exception exc)
@@ -155,6 +169,7 @@ namespace HomeWork.ViewModel
         {
             try
             {
+                //Получаю все книги из БД
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -172,10 +187,12 @@ namespace HomeWork.ViewModel
                         newBook.BookISBN = dataReader.GetString(4);
                         newBook.BookDescription = dataReader.GetString(6);
                         newBook.BookCover = (byte[])dataReader["BookCover"];
+                        //Заношу в список книгу из БД
                         Books.Add(newBook);
                     }
                     connection.Close();
                 }
+                //Делаю первую книгу выбранной
                 SelectedBook = Books.FirstOrDefault();
             }
             catch (Exception exc)
@@ -196,9 +213,9 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                if (p == null)
-                    SelectedBook = Books.FirstOrDefault();
-                else
+                if (p == null)//Проверяю был ли передан Id
+                    SelectedBook = Books.FirstOrDefault();//Выбираю просто первую книгу из списка
+                else//Выбираю книгу из списка по Id
                     SelectedBook = Books.FirstOrDefault(x => x.BookId == (int)p);
             }
             catch (Exception exc)
@@ -221,8 +238,9 @@ namespace HomeWork.ViewModel
             {
                 if (_DialogService.OpenFileDialog() == true)
                 {
-                    if (SelectedBook == null)
+                    if (SelectedBook == null)//Проверяю существует ли выбранная книга
                         SelectedBook = new Book();
+                    //Присваиваю обложке выбранной книги изображение
                     SelectedBook.BookCover = _ImageService.OpenFile(_DialogService.FilePath);
                 }
             }
@@ -244,8 +262,9 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                if (Books.Count < 1)
+                if (Books.Count < 1)//Проверяю существуют ли книги в списке
                     return;
+                //Обновляю все (для простоты) поля
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
