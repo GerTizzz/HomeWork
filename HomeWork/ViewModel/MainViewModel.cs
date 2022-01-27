@@ -52,6 +52,7 @@ namespace HomeWork.ViewModel
             GetBookCommand = new MainCommand(OnGetBookCommandExecuted, CanGetBookCommandExecute);
             GetShortListCommand = new MainCommand(OnGetShortListCommandExecuted, CanGetShortListCommandExecute);
             GetNewCoverCommand = new MainCommand(OnGetNewCoverCommandExecuted, CanGetNewCoverCommandExecute);
+            SetUpdatedDataCommand = new MainCommand(OnSetUpdatedDataCommandExecuted, CanSetUpdatedDataCommandExecute);
             _DialogService = new WindowDialogService();
             _ImageService = new ImageService();
             _ConnectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
@@ -103,6 +104,7 @@ namespace HomeWork.ViewModel
                         newBook.BookCover = (byte[])dataReader["BookCover"];
                         Books.Add(newBook);
                     }
+                    connection.Close();
                 }
                 SelectedBook = Books.FirstOrDefault();
             }
@@ -147,6 +149,46 @@ namespace HomeWork.ViewModel
                 if (_DialogService.OpenFileDialog() == true)
                 {
                     SelectedBook.BookCover = _ImageService.OpenFile(_DialogService.FilePath);
+                }
+            }
+            catch (Exception exc)
+            {
+                _DialogService.ShowMessage(exc.Message);
+            }
+        }
+
+        #endregion
+
+        #region Команда обновления данных
+
+        public ICommand SetUpdatedDataCommand { get; }
+
+        private bool CanSetUpdatedDataCommandExecute(object p) => true;
+
+        private void OnSetUpdatedDataCommandExecuted(object p)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.CommandText = "UPDATE BooksTable SET BookName = (@name), BookAuthor = (@author), BookDate = (@date), BookISBN = (@isbn), " +
+                        "BookCover = (@cover), BookDescription = (@descript) WHERE BookId = (@id)";
+                    command.Parameters.AddWithValue("@name", SelectedBook.BookName);
+                    command.Parameters.AddWithValue("@author", SelectedBook.BookAuthor);
+                    command.Parameters.AddWithValue("@date", SelectedBook.BookDate.ToString("yyyy"));
+                    command.Parameters.AddWithValue("@isbn", SelectedBook.BookISBN);
+                    command.Parameters.AddWithValue("@cover", SelectedBook.BookCover);
+                    command.Parameters.AddWithValue("@descript", SelectedBook.BookDescription);
+                    command.Parameters.AddWithValue("@id", SelectedBook.BookId);
+                    //command.CommandText = "UPDATE BooksTable SET BookName = N'" + SelectedBook.BookName +
+                    //    "', BookAuthor = N'" + SelectedBook.BookAuthor + "', BookDate = '" + SelectedBook.BookDate.ToString("yyyy") +
+                    //    "', BookISBN = N'" + SelectedBook.BookISBN + "', BookCover = " + SelectedBook.BookCover +
+                    //    ", BookDescription = N'" + SelectedBook.BookDescription + "' WHERE BookId = " + SelectedBook.BookId;
+                    command.Connection = connection;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
             catch (Exception exc)

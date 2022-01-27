@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace HomeWork.Infrastructure
@@ -14,12 +13,12 @@ namespace HomeWork.Infrastructure
                 return null;
             }
             else
-                return ((DateTime)value).ToString("yyyy");
+                return int.Parse(((DateTime)value).ToString("yyyy"));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DependencyProperty.UnsetValue;
+            return DateTime.Parse("01/10/" + value.ToString());
         }
     }
 }

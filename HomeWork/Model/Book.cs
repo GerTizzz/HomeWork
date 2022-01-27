@@ -56,7 +56,7 @@ namespace HomeWork.Model
 
         private string _Description;
 
-        public string BookDescription 
+        public string BookDescription
         {
             get => _Description;
             set => SetOnPropertyChanged(ref _Description, value); 

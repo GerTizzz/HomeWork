@@ -118,10 +118,12 @@
             <!--КНОПКИ УПРАВЛЕНИЯ ВЫБРАННОЙ КНИГОЙ-->
             <StackPanel Orientation="Horizontal" Grid.Row="1">
                 <Button Content="Сменить картинку" Width="135" Margin="4,3,2,3"
-                        Command="{Binding GetNewCoverCommand}" CommandParameter="{Binding SelectedBook}"/>
-                <Button Content="Добавить" Width="135" Margin="2,3,2,3" Command="{Binding AddBookCommand}" CommandParameter="{Binding SelectedBook}"/>
+                        Command="{Binding GetNewCoverCommand}"/>
+                <Button Content="Добавить" Width="135" Margin="2,3,2,3" 
+                        Command="{Binding AddBookCommand}"/>
                 <Button Content="Удалить" Width="135" Margin="2,3,2,3"/>
-                <Button Content="Обновить" Width="135" Margin="2,3,4,3"/>
+                <Button Content="Обновить" Width="135" Margin="2,3,4,3" 
+                        Command="{Binding SetUpdatedDataCommand}"/>
             </StackPanel>
             <!---->
             
