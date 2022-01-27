@@ -52,6 +52,7 @@ namespace HomeWork.ViewModel
             GetShortListCommand = new MainCommand(OnGetShortListCommandExecuted, CanGetShortListCommandExecute);
             GetNewCoverCommand = new MainCommand(OnGetNewCoverCommandExecuted, CanGetNewCoverCommandExecute);
             SetUpdatedDataCommand = new MainCommand(OnSetUpdatedDataCommandExecuted, CanSetUpdatedDataCommandExecute);
+            RemoveBookCommand = new MainCommand(OnRemoveBookCommandExecuted, CanRemoveBookCommandExecute);
             _DialogService = new WindowDialogService();
             _ImageService = new ImageService();
             _ConnectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
@@ -71,6 +72,8 @@ namespace HomeWork.ViewModel
         {
             try
             {
+                if (SelectedBook == null)
+                    SelectedBook = new Book();
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -84,6 +87,19 @@ namespace HomeWork.ViewModel
                     command.Connection = connection;
                     connection.Open();
                     command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                using (SqlConnection connection = new SqlConnection(_ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.CommandText = "SELECT TOP 1 BookId FROM BooksTable ORDER BY BookId DESC";
+                    command.Connection = connection;
+                    connection.Open();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        SelectedBook.BookId = dataReader.GetInt32(0);
+                    }
                     connection.Close();
                 }
                 Books.Add(SelectedBook);
@@ -106,6 +122,8 @@ namespace HomeWork.ViewModel
         {
             try
             {
+                if (Books.Count < 1)
+                    return;
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();
@@ -116,7 +134,7 @@ namespace HomeWork.ViewModel
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
-                Books.Remove(SelectedBook);
+                Books.Remove(Books.SingleOrDefault(x => x.BookId == SelectedBook.BookId));
                 SelectedBook = Books.FirstOrDefault();
             }
             catch (Exception exc)
@@ -178,7 +196,10 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                SelectedBook = Books.FirstOrDefault(x => x.BookId == (int)p);
+                if (p == null)
+                    SelectedBook = Books.FirstOrDefault();
+                else
+                    SelectedBook = Books.FirstOrDefault(x => x.BookId == (int)p);
             }
             catch (Exception exc)
             {
@@ -200,6 +221,8 @@ namespace HomeWork.ViewModel
             {
                 if (_DialogService.OpenFileDialog() == true)
                 {
+                    if (SelectedBook == null)
+                        SelectedBook = new Book();
                     SelectedBook.BookCover = _ImageService.OpenFile(_DialogService.FilePath);
                 }
             }
@@ -221,6 +244,8 @@ namespace HomeWork.ViewModel
         {
             try
             {
+                if (Books.Count < 1)
+                    return;
                 using (SqlConnection connection = new SqlConnection(_ConnectionString))
                 {
                     SqlCommand command = new SqlCommand();

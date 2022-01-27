@@ -8,16 +8,18 @@
         xmlns:conv="clr-namespace:HomeWork.Infrastructure"
         xmlns:local="clr-namespace:HomeWork"
         mc:Ignorable="d"
-        Title="{Binding SelectedBook.BookName}" Height="450" Width="800"
+        Title="Книгоприложение" Height="450" Width="800"
         ResizeMode="NoResize" FontSize="14">
     
     <!--УКАЗЫВАЮ В КАЧЕСТВЕ ПОДКЛЮЧАЕМОГО РЕСУРСА КОНВЕРТЕР, ЧТОБЫ ОТОБРАЖАТЬ ИЗ ВСЕЙ ДАТЫ ТОЛЬКО ГОД-->
     <Window.Resources>
+        <!--КОНВЕРТИРУЕТ DATETIME В СТРОКУ, В КОТОРОЙ ОТОБРАЖАЕТСЯ ТОЛЬКО ГОД-->
+        <!--ТАКЖЕ КОНВЕРТЕР ПРЕВРАЩАЮТ СТРОКУ, СОСТОЯЩУЮ ИЗ ОДНОГО ГОДА В DATETIME-->
         <conv:DateTimeToYearConverter x:Key="DateTimeToYearConverterKey"/>
     </Window.Resources>
     <!---->
 
-    <!--СОЗДАЮ ТРИГГЕР НА СОБЫТИЕ ПРОГРУЗКИ ОКНА-->
+    <!--ТРИГГЕР НА СОБЫТИЕ ПРОГРУЗКИ ОКНА, ЧТОБЫ ПОСЛЕ ПРОГРУЗКИ ОТОБРАЗИТЬ ШОРТ-ЛИСТ КНИГ-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction 
@@ -66,7 +68,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <!---->
-            <!--ТРИГГЕР НА ИЗМЕНЕНИЕ ВЫБРАННОЙ КНИГИ-->
+            <!--ТРИГГЕР НА ОТОБРАЖЕНИЕ ВЫБРАННОЙ КНИГИ-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction 
@@ -78,7 +80,7 @@
         </ListBox>
         <!---->
 
-        <!--ЗДЕСЬ ОТОБРАЖАЕТСЯ ИНФОРМАЦИЯ КАСАТЕЛЬНО ВЫБРАННОЙ КНИГИ И УПРАВЛЕНИЯ ЕЮ-->
+        <!--ЗДЕСЬ ОТОБРАЖАЕТСЯ ИНФОРМАЦИЯ КАСАТЕЛЬНО ВЫБРАННОЙ КНИГИ И УПРАВЛЕНИЕ ЕЮ-->
         <Grid Grid.Row="1" Grid.Column="1">
             
             <Grid.RowDefinitions>
@@ -121,7 +123,8 @@
                         Command="{Binding GetNewCoverCommand}"/>
                 <Button Content="Добавить" Width="135" Margin="2,3,2,3" 
                         Command="{Binding AddBookCommand}"/>
-                <Button Content="Удалить" Width="135" Margin="2,3,2,3"/>
+                <Button Content="Удалить" Width="135" Margin="2,3,2,3"
+                        Command="{Binding RemoveBookCommand}"/>
                 <Button Content="Обновить" Width="135" Margin="2,3,4,3" 
                         Command="{Binding SetUpdatedDataCommand}"/>
             </StackPanel>

@@ -18,7 +18,12 @@ namespace HomeWork.Infrastructure
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DateTime.Parse("01/10/" + value.ToString());
+            DateTime result = DateTime.Parse("01/01/1000");
+            if(DateTime.TryParse("01/10/" + value.ToString(), out result))
+            {
+                return result;
+            }
+            return result;
         }
     }
 }
