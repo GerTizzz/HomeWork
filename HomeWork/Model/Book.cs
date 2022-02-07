@@ -1,82 +1,75 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace HomeWork.Model
 {
-    internal class Book : INotifyPropertyChanged //реализовал интерфейс, чтобы значение каждого поля можно было отобразить в списке в окне
+    internal class Book : INotifyPropertyChanged
     {
-        private string _Name;
+        private string _name;
+        private int _id;
+        private string _author;
+        private int _creationYear;
+        private string _ISBN;
+        private byte[] _cover;
+        private string _description;
 
         public string BookName
         {
-            get => _Name;
-            set => SetOnPropertyChanged(ref _Name, value);
+            get => _name;
+            set => CanOnPropertyChanged(ref _name, value);
         }
-
-        private int _Id;
 
         public int BookId
         {
-            get => _Id;
-            set => SetOnPropertyChanged(ref _Id, value);
+            get => _id;
+            set => CanOnPropertyChanged(ref _id, value);
         }
-
-        private string _Author;
 
         public string BookAuthor
         {
-            get => _Author;
-            set => SetOnPropertyChanged(ref _Author, value);
+            get => _author;
+            set => CanOnPropertyChanged(ref _author, value);
         }
 
-        private DateTime _YearCreation;
-
-        public DateTime BookDate
+        public int BookDate
         {
-            get => _YearCreation;
-            set => SetOnPropertyChanged(ref _YearCreation, value);
+            get => _creationYear;
+            set => CanOnPropertyChanged(ref _creationYear, value);
         }
-
-        private string _ISBN;
 
         public string BookISBN
         {
             get => _ISBN;
-            set => SetOnPropertyChanged(ref _ISBN, value);
+            set => CanOnPropertyChanged(ref _ISBN, value);
         }
-
-        private byte[] _Cover;
 
         public byte[] BookCover
         {
-            get => _Cover;
-            set => SetOnPropertyChanged(ref _Cover, value);
+            get => _cover;
+            set => CanOnPropertyChanged(ref _cover, value);
         }
-
-        private string _Description;
 
         public string BookDescription
         {
-            get => _Description;
-            set => SetOnPropertyChanged(ref _Description, value); 
+            get => _description;
+            set => CanOnPropertyChanged(ref _description, value); 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChange([CallerMemberName] string PropertyName = null)
+        public void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool SetOnPropertyChanged<T>(ref T field, T value, [CallerMemberName] string PropertyName = null)
+        public bool CanOnPropertyChanged<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(field, value))
             {
                 return false;
             }
             field = value;
-            OnPropertyChange(PropertyName);
+            OnPropertyChange(propertyName);
             return true;
         }
     }

@@ -8,12 +8,11 @@ namespace HomeWork.Infrastructure
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (Equals((DateTime)value, new DateTime()))//проверяю не пустое ли значение
+            if (value is DateTime dateTime)
             {
-                return null;
+                return dateTime.Year;
             }
-            else
-                return int.Parse(((DateTime)value).ToString("yyyy"));//возвращаю только год из всей временной даты
+            throw new Exception(); 
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

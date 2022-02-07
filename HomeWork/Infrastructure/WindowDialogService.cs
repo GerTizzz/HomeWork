@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using HomeWork.Infrastructure.Services;
+using Microsoft.Win32;
 using System.Windows;
-using HomeWork.Infrastructure.Services;
 
 namespace HomeWork.Infrastructure
 {

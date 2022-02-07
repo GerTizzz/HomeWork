@@ -68,15 +68,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <!---->
-            <!--ТРИГГЕР НА ОТОБРАЖЕНИЕ ВЫБРАННОЙ КНИГИ-->
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction 
-                Command="{Binding GetBookCommand}"
-                CommandParameter="{Binding SelectedBook.BookId}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <!---->
         </ListBox>
         <!---->
 
@@ -104,7 +95,7 @@
                     <TextBox Text="{Binding Path=BookAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookDate, Converter={StaticResource DateTimeToYearConverterKey}}"
+                    <TextBox Text="{Binding Path=BookDate}"
                              Style="{StaticResource DefaultTextBox}"/>
                     <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Path=BookISBN}" Style="{StaticResource DefaultTextBox}"/>
@@ -118,16 +109,19 @@
             <!---->
 
             <!--КНОПКИ УПРАВЛЕНИЯ ВЫБРАННОЙ КНИГОЙ-->
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button Content="Сменить картинку" Width="135" Margin="4,3,2,3"
-                        Command="{Binding GetNewCoverCommand}"/>
-                <Button Content="Добавить" Width="135" Margin="2,3,2,3" 
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Добавить" Margin="3" Grid.Column="0"
                         Command="{Binding AddBookCommand}"/>
-                <Button Content="Удалить" Width="135" Margin="2,3,2,3"
-                        Command="{Binding RemoveBookCommand}"/>
-                <Button Content="Обновить" Width="135" Margin="2,3,4,3" 
+                <Button Content="Редактировать" Margin="3" Grid.Column="1"
                         Command="{Binding SetUpdatedDataCommand}"/>
-            </StackPanel>
+                <Button Content="Удалить" Margin="3" Grid.Column="2"
+                        Command="{Binding RemoveBookCommand}"/>
+            </Grid>
             <!---->
             
         </Grid>

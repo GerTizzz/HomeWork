@@ -65,12 +65,19 @@
     <Compile Include="Infrastructure\Commands\BaseCommands.cs" />
     <Compile Include="Infrastructure\Commands\MainCommand.cs" />
     <Compile Include="Infrastructure\Converters\DateTimeToYearConverter.cs" />
+    <Compile Include="Infrastructure\DataBaseService.cs" />
     <Compile Include="Infrastructure\ImageService.cs" />
+    <Compile Include="Infrastructure\Services\IDataBaseService.cs" />
     <Compile Include="Infrastructure\Services\IDialogService.cs" />
     <Compile Include="Infrastructure\Services\IGetImageService.cs" />
     <Compile Include="Infrastructure\WindowDialogService.cs" />
+    <Compile Include="ViewModel\AddBookViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="Theme\TextBoxTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddBookWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,6 +90,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="View\AddBookWindow.xaml.cs">
+      <DependentUpon>AddBookWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
