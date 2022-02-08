@@ -38,7 +38,7 @@ namespace HomeWork.Infrastructure
                     "BookCover = (@cover), BookDescription = (@descript) WHERE BookId = (@id)";
                 command.Parameters.AddWithValue("@name", book.BookName);
                 command.Parameters.AddWithValue("@author", book.BookAuthor);
-                command.Parameters.AddWithValue("@date", book.BookDate.ToString());
+                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Parameters.AddWithValue("@isbn", book.BookISBN);
                 command.Parameters.AddWithValue("@cover", book.BookCover);
                 command.Parameters.AddWithValue("@descript", book.BookDescription);
@@ -85,7 +85,7 @@ namespace HomeWork.Infrastructure
                     newBook.BookId = dataReader.GetInt32(0);
                     newBook.BookName = dataReader.GetString(1);
                     newBook.BookAuthor = dataReader.GetString(2);
-                    newBook.BookDate = dataReader.GetDateTime(3).Year;
+                    newBook.BookDate = dataReader.GetInt32(3);
                     newBook.BookISBN = dataReader.GetString(4);
                     newBook.BookDescription = dataReader.GetString(6);
                     newBook.BookCover = (byte[])dataReader["BookCover"];
@@ -104,7 +104,7 @@ namespace HomeWork.Infrastructure
                 command.CommandText = "INSERT BooksTable VALUES ((@name), (@author), (@date), (@isbn), (@cover), (@descript))";
                 command.Parameters.AddWithValue("@name", book.BookName);
                 command.Parameters.AddWithValue("@author", book.BookAuthor);
-                command.Parameters.AddWithValue("@date", book.BookDate.ToString());
+                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Parameters.AddWithValue("@isbn", book.BookISBN);
                 command.Parameters.AddWithValue("@cover", book.BookCover);
                 command.Parameters.AddWithValue("@descript", book.BookDescription);
