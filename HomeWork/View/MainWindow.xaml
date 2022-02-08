@@ -81,6 +81,7 @@
 
             <!--ЗДЕСЬ ВСЕ ЭЛЕМЕНТЫ ДАННЫХ, НА КОТОРЫХ ОТОБРАЖАЕСТЯ ИНФОРМАЦИЯ О ВЫБРАННОЙ КНИГЕ-->
             <StackPanel Grid.Row="0" Orientation="Horizontal" DataContext="{Binding SelectedBook}">
+                
                 <!--ЭЛЕМЕНТ ПРЕДСТАВЛЕНИЯ ИЗОБРАЖЕНИЯ ОБЛОЖКИ-->
                 <Image Margin="2,2,1,2" Width="277" MaxWidth="277" Source="{Binding BookCover}"/>
                 <!---->
@@ -88,20 +89,18 @@
                 <!--ПЕРЕЧИСЛЕНИЕЕ ВСЕЙ ДОСТУПНОЙ ИНФОРМАЦИИ О КНИГЕ-->
                 <StackPanel Width="277" Orientation="Vertical" Margin="1,2,2,2">
                     <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookId}" IsEnabled="False" Style="{StaticResource DefaultTextBox}"/>
+                    <TextBox Text="{Binding Path=BookId}" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                     <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookName}" Style="{StaticResource DefaultTextBox}"/>
+                    <TextBox Text="{Binding Path=BookName}" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                     <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource DefaultTextBox}"/>
+                    <TextBox Text="{Binding Path=BookAuthor}" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                     <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookDate}"
-                             Style="{StaticResource DefaultTextBox}"/>
+                    <TextBox Text="{Binding Path=BookDate}" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                     <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}"/>
-                    <TextBox Text="{Binding Path=BookISBN}" Style="{StaticResource DefaultTextBox}"/>
+                    <TextBox Text="{Binding Path=BookISBN}" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                     <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}"/>
                     <TextBox Text="{Binding Path=BookDescription}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"
-                             MaxHeight="125" Height="125" Style="{StaticResource DefaultTextBox}"/>
+                             MaxHeight="125" Height="125" Style="{StaticResource TextBoxTheme.Alignment.Center}" IsReadOnly="True"/>
                 </StackPanel>
                 <!---->
                 

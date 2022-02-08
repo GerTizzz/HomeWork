@@ -77,9 +77,9 @@
     <Compile Include="Infrastructure\WindowDialogService.cs" />
     <Compile Include="ViewModel\AddBookViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Page Include="Theme\TextBoxTheme.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Theme\TextBoxTheme.Alignment.Center.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\AddBookWindow.xaml">
       <SubType>Designer</SubType>

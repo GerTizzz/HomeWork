@@ -84,11 +84,11 @@ namespace HomeWork.Infrastructure
                     Book newBook = new Book();
                     newBook.BookId = dataReader.GetInt32(0);
                     newBook.BookName = dataReader.GetString(1);
-                    newBook.BookAuthor = dataReader.GetString(2);
-                    newBook.BookDate = dataReader.GetInt32(3);
-                    newBook.BookISBN = dataReader.GetString(4);
-                    newBook.BookDescription = dataReader.GetString(6);
+                    newBook.BookAuthor = dataReader.GetString(2);                    
+                    newBook.BookISBN = dataReader.GetString(3);
                     newBook.BookCover = (byte[])dataReader["BookCover"];
+                    newBook.BookDescription = dataReader.GetString(5);
+                    newBook.BookDate = dataReader.GetInt32(6);                    
                     Books.Add(newBook);
                 }
                 connection.Close();
