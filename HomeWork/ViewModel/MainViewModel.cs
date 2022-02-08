@@ -21,7 +21,7 @@ namespace HomeWork.ViewModel
         private Book _selectedBook;
 
         //Свойство списка с книгами
-        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
+        public ObservableCollection<Book> Books { get; } = new ObservableCollection<Book>();
 
         //Свойство выбранной книги
         public Book SelectedBook
@@ -58,8 +58,10 @@ namespace HomeWork.ViewModel
                 AddBookViewModel addBookViewModel = new AddBookViewModel();
                 addBookViewModel.SelectedBook = new Book();
                 add.Title = "Добавить книгу";
+                addBookViewModel.ShowAddButton = true;
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
+                _dataBaseService.WriteToDataBase(SelectedBook);
                 Books.Add(addBookViewModel.SelectedBook);
                 SelectedBook = Books.LastOrDefault();
                 SelectedBook.BookId = _dataBaseService.GetLastBookId();
@@ -83,9 +85,10 @@ namespace HomeWork.ViewModel
                 }
                 _dataBaseService.DeleteBookDataBase(SelectedBook.BookId);
                 //Удаляю книгу из списка
-                Books.Remove(Books.SingleOrDefault(x => x.BookId == SelectedBook.BookId));
+                int index = Books.IndexOf(SelectedBook);
+                Books.RemoveAt(index);
                 //Делаю первую книгу из списка выбранной
-                SelectedBook = Books.FirstOrDefault();
+                SelectedBook = index >= Books.Count ? Books[index - 1] : Books[index + 1];
             }
             catch (Exception exc)
             {
@@ -106,10 +109,12 @@ namespace HomeWork.ViewModel
                 }
                 AddBookWindow add = new AddBookWindow();
                 add.Title = "Редактировать книгу";
-                AddBookViewModel viewModel = new AddBookViewModel();
-                viewModel.SelectedBook = SelectedBook;
-                add.DataContext = viewModel;
+                AddBookViewModel addBookViewModel = new AddBookViewModel();
+                addBookViewModel.SelectedBook = SelectedBook;
+                addBookViewModel.ShowEditButton = true;
+                add.DataContext = addBookViewModel;
                 add.ShowDialog();
+                _dataBaseService.EditBookDataBase(SelectedBook);
             }
             catch (Exception exc)
             {

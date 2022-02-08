@@ -60,11 +60,14 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Button Content="Выбрать изображение" Command="{Binding SetNewCoverCommand}" Margin="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"/>
-                <Button Content="Добавить" Command="{Binding AddBookCommand}"
-                        Margin="3" Grid.Column="1" Grid.Row="0"
+                <Button Content="Выбрать изображение" Command="{Binding SetNewCoverCommand}"
+                        Margin="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"/>
+                <Button Content="Добавить" Command="{Binding AddBookCommand}" Margin="3"
+                        Grid.Column="1" Grid.Row="0" IsHitTestVisible="{Binding ShowAddButton}"
                         CommandParameter="{Binding ElementName=ChangeBookWindow}"/>
-                <Button Content="Обновить" Command="{Binding EditBookCommand}" Margin="3" Grid.Column="0" Grid.Row="0"/>
+                <Button Content="Обновить" Command="{Binding EditBookCommand}" Margin="3"
+                        Grid.Column="0" Grid.Row="0" IsHitTestVisible="{Binding ShowEditButton}"
+                        CommandParameter="{Binding ElementName=ChangeBookWindow}"/>
             </Grid>
         </Grid>
         <!---->

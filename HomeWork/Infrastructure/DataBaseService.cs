@@ -34,14 +34,14 @@ namespace HomeWork.Infrastructure
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
-                command.CommandText = "UPDATE BooksTable SET BookName = (@name), BookAuthor = (@author), BookDate = (@date), BookISBN = (@isbn), " +
-                    "BookCover = (@cover), BookDescription = (@descript) WHERE BookId = (@id)";
+                command.CommandText = "UPDATE BooksTable SET BookName = (@name), BookAuthor = (@author), BookISBN = (@isbn), " +
+                    "BookCover = (@cover), BookDescription = (@descript), BookDate = (@date) WHERE BookId = (@id)";
                 command.Parameters.AddWithValue("@name", book.BookName);
                 command.Parameters.AddWithValue("@author", book.BookAuthor);
-                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Parameters.AddWithValue("@isbn", book.BookISBN);
                 command.Parameters.AddWithValue("@cover", book.BookCover);
                 command.Parameters.AddWithValue("@descript", book.BookDescription);
+                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Parameters.AddWithValue("@id", book.BookId);
                 command.Connection = connection;
                 connection.Open();
@@ -101,13 +101,13 @@ namespace HomeWork.Infrastructure
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
-                command.CommandText = "INSERT BooksTable VALUES ((@name), (@author), (@date), (@isbn), (@cover), (@descript))";
+                command.CommandText = "INSERT BooksTable VALUES ((@name), (@author), (@isbn), (@cover), (@descript), (@date))";
                 command.Parameters.AddWithValue("@name", book.BookName);
                 command.Parameters.AddWithValue("@author", book.BookAuthor);
-                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Parameters.AddWithValue("@isbn", book.BookISBN);
                 command.Parameters.AddWithValue("@cover", book.BookCover);
                 command.Parameters.AddWithValue("@descript", book.BookDescription);
+                command.Parameters.AddWithValue("@date", book.BookDate);
                 command.Connection = connection;
                 connection.Open();
                 command.ExecuteNonQuery();

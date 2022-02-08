@@ -5,7 +5,6 @@ using HomeWork.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
 
@@ -17,12 +16,13 @@ namespace HomeWork.ViewModel
         private readonly IDialogService _dialogService;
         // Сервис, считывающий выбранный файл
         private readonly IGetImageService _imageService;
-        private readonly IDataBaseService _dataBaseService;
-        private readonly string _connectionString;
         private Book _selectedBook;
         public ICommand AddBookCommand { get; }
         public ICommand EditBookCommand { get; }
         public ICommand SetNewCoverCommand { get; }
+
+        public bool ShowAddButton { get; set; } = false;
+        public bool ShowEditButton { get; set; } = false;
 
         public Book SelectedBook
         {
@@ -37,8 +37,6 @@ namespace HomeWork.ViewModel
             SetNewCoverCommand = new MainCommand(OnSetNewCoverCommandExecuted, CanSetNewCoverCommandExecute);
             _dialogService = new WindowDialogService();
             _imageService = new ImageService();
-            _dataBaseService = new DataBaseService();
-            _connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
         }
         private bool CanAddBookCommandExecute(object p) => true;
 
@@ -46,8 +44,7 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                ValidateBook();
-                _dataBaseService.WriteToDataBase(SelectedBook);      
+                ValidateBook();                      
                 if (p is Window window)
                 {
                     CloseWindow(window);
@@ -66,8 +63,7 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                ValidateBook();
-                _dataBaseService.EditBookDataBase(SelectedBook);
+                ValidateBook();                
                 if (p is Window window)
                 {
                     CloseWindow(window);
