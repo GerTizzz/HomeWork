@@ -58,7 +58,7 @@ namespace HomeWork.ViewModel
                 AddBookViewModel addBookViewModel = new AddBookViewModel();
                 addBookViewModel.SelectedBook = new Book();
                 add.Title = "Добавить книгу";
-                addBookViewModel.ShowAddButton = true;
+                addBookViewModel.ShowAddButton = "Visible";
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
                 _dataBaseService.WriteToDataBase(SelectedBook);
@@ -111,7 +111,7 @@ namespace HomeWork.ViewModel
                 add.Title = "Редактировать книгу";
                 AddBookViewModel addBookViewModel = new AddBookViewModel();
                 addBookViewModel.SelectedBook = SelectedBook;
-                addBookViewModel.ShowEditButton = true;
+                addBookViewModel.ShowEditButton = "Visible";
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
                 _dataBaseService.EditBookDataBase(SelectedBook);

@@ -21,8 +21,8 @@ namespace HomeWork.ViewModel
         public ICommand EditBookCommand { get; }
         public ICommand SetNewCoverCommand { get; }
 
-        public bool ShowAddButton { get; set; } = false;
-        public bool ShowEditButton { get; set; } = false;
+        public string ShowAddButton { get; set; } = "Hidden";
+        public string ShowEditButton { get; set; } = "Hidden";
 
         public Book SelectedBook
         {
