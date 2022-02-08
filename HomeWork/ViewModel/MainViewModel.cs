@@ -86,7 +86,7 @@ namespace HomeWork.ViewModel
                 {
                     return;
                 }
-                _dataBaseService.DeleteBookDataBase(SelectedBook.BookId);
+                _dataBaseService.DeleteBookDataBase(SelectedBook.BookId.Value);
                 //Удаляю книгу из списка
                 int index = Books.IndexOf(SelectedBook);
                 Books.RemoveAt(index);
@@ -119,10 +119,12 @@ namespace HomeWork.ViewModel
                 addBookViewModel.ShowEditButton = "Visible";
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
+                int index = Books.IndexOf(SelectedBook);
                 if (addBookViewModel.IsSetEditBookCommand)
                 {
                     _dataBaseService.EditBookDataBase(addBookViewModel.SelectedBook);
-                    SelectedBook = addBookViewModel.SelectedBook;
+                    Books[index] = addBookViewModel.SelectedBook;
+                    SelectedBook = Books[index];
                 }
             }
             catch (Exception exc)

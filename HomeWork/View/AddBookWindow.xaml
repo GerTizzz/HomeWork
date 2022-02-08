@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:HomeWork.ViewModel"
         xmlns:local="clr-namespace:HomeWork.View"
         mc:Ignorable="d"
-        Title="" Height="515" Width="800" FontSize="16"
+        Title="" Height="460" Width="800" FontSize="16"
         ResizeMode="NoResize" x:Name="ChangeBookWindow">
 
     <Window.DataContext>
@@ -35,23 +35,19 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Уникальный идентификатор" Style="{StaticResource DefaultTextBlock}" Margin="3 3 3 1.5" Grid.Row="0"/>
-            <TextBox Text="{Binding Path=SelectedBook.BookId}" IsReadOnly="True" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="1"/>
-            <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="2"/>
-            <TextBox Text="{Binding Path=SelectedBook.BookName}" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="3"/>
-            <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="4"/>
-            <TextBox Text="{Binding Path=SelectedBook.BookAuthor}" Grid.Row="5" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5"/>
-            <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="6"/>
-            <TextBox Text="{Binding Path=SelectedBook.BookDate}" Grid.Row="7" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5"/>
-            <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="8"/>
-            <TextBox Text="{Binding Path=SelectedBook.BookISBN}" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="9"/>
-            <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="10"/>
+            <TextBlock Text="Название" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="0"/>
+            <TextBox Text="{Binding Path=SelectedBook.BookName}" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="1"/>
+            <TextBlock Text="Автор" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="2"/>
+            <TextBox Text="{Binding Path=SelectedBook.BookAuthor}" Grid.Row="3" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5"/>
+            <TextBlock Text="Год выпуска" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="4"/>
+            <TextBox Text="{Binding Path=SelectedBook.BookDate}" Grid.Row="5" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5"/>
+            <TextBlock Text="ISBN" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="6"/>
+            <TextBox Text="{Binding Path=SelectedBook.BookISBN}" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="7"/>
+            <TextBlock Text="Краткое описание" Style="{StaticResource DefaultTextBlock}" Margin="3 1.5 3 1.5" Grid.Row="8"/>
             <TextBox Text="{Binding Path=SelectedBook.BookDescription}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"
-                             MaxHeight="125" Height="125" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="11"/>
-            <Grid Grid.Row="12">
+                             MaxHeight="125" Height="125" Style="{StaticResource TextBoxTheme.Alignment.Center}" Margin="3 1.5 3 1.5" Grid.Row="9"/>
+            <Grid Grid.Row="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

@@ -7,7 +7,7 @@ namespace HomeWork.Model
     internal class Book : INotifyPropertyChanged
     {
         private string _name;
-        private int _id;
+        private int? _id;
         private string _author;
         private int? _creationYear;
         private string _ISBN;
@@ -22,7 +22,7 @@ namespace HomeWork.Model
             set => CanOnPropertyChanged(ref _name, value);
         }
 
-        public int BookId
+        public int? BookId
         {
             get => _id;
             set => CanOnPropertyChanged(ref _id, value);
