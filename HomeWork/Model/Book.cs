@@ -43,7 +43,7 @@ namespace HomeWork.Model
         }
 
         [Required(ErrorMessage = "Не заполнено поле ISBN книги!")]
-        [StringLength(30, MinimumLength = 10)]
+        [StringLength(30, MinimumLength = 1)]
         public string BookISBN
         {
             get => _ISBN;
@@ -58,7 +58,6 @@ namespace HomeWork.Model
         }
 
         [Required(ErrorMessage = "Не заполнено поле описание книги!")]
-        [StringLength(1000, MinimumLength = 10)]
         public string BookDescription
         {
             get => _description;

@@ -24,6 +24,9 @@ namespace HomeWork.ViewModel
         public string ShowAddButton { get; set; } = "Hidden";
         public string ShowEditButton { get; set; } = "Hidden";
 
+        public bool IsSetAddBookCommand { get; set; } = false;
+        public bool IsSetEditBookCommand { get; set; } = false;
+
         public Book SelectedBook
         {
             get => _selectedBook;
@@ -43,8 +46,9 @@ namespace HomeWork.ViewModel
         private void OnAddBookCommandExecuted(object p)
         {
             try
-            {
-                ValidateBook();                      
+            {                
+                ValidateBook();
+                IsSetAddBookCommand = true;
                 if (p is Window window)
                 {
                     CloseWindow(window);
@@ -63,7 +67,8 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                ValidateBook();                
+                ValidateBook();     
+                IsSetEditBookCommand = true;
                 if (p is Window window)
                 {
                     CloseWindow(window);

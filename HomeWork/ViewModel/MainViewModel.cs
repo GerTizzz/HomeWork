@@ -61,10 +61,13 @@ namespace HomeWork.ViewModel
                 addBookViewModel.ShowAddButton = "Visible";
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
-                _dataBaseService.WriteToDataBase(SelectedBook);
-                Books.Add(addBookViewModel.SelectedBook);
-                SelectedBook = Books.LastOrDefault();
-                SelectedBook.BookId = _dataBaseService.GetLastBookId();
+                if (addBookViewModel.IsSetAddBookCommand)
+                {
+                    _dataBaseService.WriteToDataBase(addBookViewModel.SelectedBook);
+                    Books.Add(addBookViewModel.SelectedBook);
+                    SelectedBook = Books.LastOrDefault();
+                    SelectedBook.BookId = _dataBaseService.GetLastBookId();
+                }
             }
             catch (Exception ex)
             {
@@ -110,11 +113,17 @@ namespace HomeWork.ViewModel
                 AddBookWindow add = new AddBookWindow();
                 add.Title = "Редактировать книгу";
                 AddBookViewModel addBookViewModel = new AddBookViewModel();
-                addBookViewModel.SelectedBook = SelectedBook;
+                addBookViewModel.SelectedBook = new Book() { BookId = SelectedBook.BookId, BookAuthor = SelectedBook.BookAuthor,
+                    BookCover = SelectedBook.BookCover, BookDate = SelectedBook.BookDate, BookDescription = SelectedBook.BookDescription,
+                    BookISBN = SelectedBook.BookISBN, BookName = SelectedBook.BookName };
                 addBookViewModel.ShowEditButton = "Visible";
                 add.DataContext = addBookViewModel;
                 add.ShowDialog();
-                _dataBaseService.EditBookDataBase(SelectedBook);
+                if (addBookViewModel.IsSetEditBookCommand)
+                {
+                    _dataBaseService.EditBookDataBase(addBookViewModel.SelectedBook);
+                    SelectedBook = addBookViewModel.SelectedBook;
+                }
             }
             catch (Exception exc)
             {
