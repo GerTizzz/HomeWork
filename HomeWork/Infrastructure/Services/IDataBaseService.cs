@@ -5,10 +5,10 @@ namespace HomeWork.Infrastructure.Services
 {
     interface IDataBaseService
     {
-        void WriteToDataBase(string connectionString, Book book);
-        List<Book> ReadFromDataBase(string connectionString);
-        void EditBookDataBase(string connectionString, Book book);
-        void DeleteBookDataBase(string connectionString, int id);
-        int GetLastBookId(string connectionString);
+        void WriteToDataBase(Book book);
+        List<Book> ReadFromDataBase();
+        void EditBookDataBase(Book book);
+        void DeleteBookDataBase(int id);
+        int GetLastBookId();
     }
 }

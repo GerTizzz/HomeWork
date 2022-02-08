@@ -1,15 +1,23 @@
 ﻿using HomeWork.Infrastructure.Services;
 using HomeWork.Model;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace HomeWork.Infrastructure
 {
     internal class DataBaseService : IDataBaseService
     {
-        public void DeleteBookDataBase(string connectionString, int id)
+        private readonly string _connectionString;
+
+        public DataBaseService()
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            _connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
+        }
+
+        public void DeleteBookDataBase(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "DELETE BooksTable WHERE BookId = (@id)";
@@ -21,9 +29,9 @@ namespace HomeWork.Infrastructure
             }
         }
 
-        public void EditBookDataBase(string connectionString, Book book)
+        public void EditBookDataBase(Book book)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "UPDATE BooksTable SET BookName = (@name), BookAuthor = (@author), BookDate = (@date), BookISBN = (@isbn), " +
@@ -42,10 +50,10 @@ namespace HomeWork.Infrastructure
             }
         }
 
-        public int GetLastBookId(string connectionString)
+        public int GetLastBookId()
         {
             int resultId = 0;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "SELECT TOP 1 BookId FROM BooksTable ORDER BY BookId DESC";
@@ -61,10 +69,10 @@ namespace HomeWork.Infrastructure
             return resultId;
         }
 
-        public List<Book> ReadFromDataBase(string connectionString)
+        public List<Book> ReadFromDataBase()
         {
             List<Book> Books = new List<Book>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "SELECT * FROM BooksTable";
@@ -88,9 +96,9 @@ namespace HomeWork.Infrastructure
             return Books;
         }
 
-        public void WriteToDataBase(string connectionString, Book book)
+        public void WriteToDataBase(Book book)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "INSERT BooksTable VALUES ((@name), (@author), (@date), (@isbn), (@cover), (@descript))";

@@ -5,7 +5,6 @@ using HomeWork.Model;
 using HomeWork.View;
 using System;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
 
@@ -20,8 +19,6 @@ namespace HomeWork.ViewModel
 
         //Выбранная книга
         private Book _selectedBook;
-        //Строка подключения к БД
-        private readonly string _connectionString;
 
         //Свойство списка с книгами
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
@@ -46,9 +43,7 @@ namespace HomeWork.ViewModel
             //Инициализирую сервисы
             _dialogService = new WindowDialogService();
             _dataBaseService = new DataBaseService();
-            //Получаю строку подключения
-            _connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
-            Books = new ObservableCollection<Book>(_dataBaseService.ReadFromDataBase(_connectionString));
+            Books = new ObservableCollection<Book>(_dataBaseService.ReadFromDataBase());
             SelectedBook = Books.FirstOrDefault();
         }
         
@@ -67,7 +62,7 @@ namespace HomeWork.ViewModel
                 add.ShowDialog();
                 Books.Add(addBookViewModel.SelectedBook);
                 SelectedBook = Books.LastOrDefault();
-                SelectedBook.BookId = _dataBaseService.GetLastBookId(_connectionString);
+                SelectedBook.BookId = _dataBaseService.GetLastBookId();
             }
             catch (Exception ex)
             {
@@ -86,7 +81,7 @@ namespace HomeWork.ViewModel
                 {
                     return;
                 }
-                _dataBaseService.DeleteBookDataBase(_connectionString, SelectedBook.BookId);
+                _dataBaseService.DeleteBookDataBase(SelectedBook.BookId);
                 //Удаляю книгу из списка
                 Books.Remove(Books.SingleOrDefault(x => x.BookId == SelectedBook.BookId));
                 //Делаю первую книгу из списка выбранной

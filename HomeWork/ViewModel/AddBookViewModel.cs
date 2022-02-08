@@ -4,6 +4,7 @@ using HomeWork.Infrastructure.Services;
 using HomeWork.Model;
 using System;
 using System.Configuration;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HomeWork.ViewModel
@@ -43,7 +44,12 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                _dataBaseService.WriteToDataBase(_connectionString, SelectedBook);                
+
+                _dataBaseService.WriteToDataBase(SelectedBook);      
+                if (p is Window window)
+                {
+                    CloseWindow(window);
+                }
             }
             catch (Exception exc)
             {
@@ -58,7 +64,11 @@ namespace HomeWork.ViewModel
         {
             try
             {
-                _dataBaseService.EditBookDataBase(_connectionString, SelectedBook);
+                _dataBaseService.EditBookDataBase(SelectedBook);
+                if (p is Window window)
+                {
+                    CloseWindow(window);
+                }
             }
             catch (Exception exc)
             {
@@ -82,6 +92,12 @@ namespace HomeWork.ViewModel
             {
                 _dialogService.ShowMessage(exc.Message);
             }
+        }
+
+        //Хэлпер закрытия окна после внесения изменений/добавления
+        private void CloseWindow(Window window)
+        {
+            window.Close();
         }
     }
 }
